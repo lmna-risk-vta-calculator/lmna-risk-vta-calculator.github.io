@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>LMNA-risk VTA calculator</title>
+</head>
+
+<body>
+    <div class="container bg-light">
+        <div class="row justify-content-md-center mt-4 pt-4">
+            <div class="col-md-8 text-center">
+                <h1><strong>LMNA-risk VTA calculator</strong></h1>
+                <h3>Risk Prediction Score for Life-Threatening Ventricular Tachyarrhythmias in Laminopathies</h3>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col">
+                <form>
+                    <fieldset class="form-group">
+                        <div class="row align-items-center">
+                            <legend class="col-form-label col-sm-2 pt-0"><strong>Sex</strong></legend>
+                            <div class="col-sm-10">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="sexRadios" id="sexRadiosMale" value="male">
+                                    <label class="form-check-label" for="sexRadiosMale">Male</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="sexRadios" id="sexRadiosFemale" value="female">
+                                    <label class="form-check-label" for="sexRadiosFemale">Female</label>
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <div class="row align-items-center">
+                            <legend class="col-form-label col-sm-2 pt-0"><strong>Non-missense LMNA mutation</strong></legend>
+                            <div class="col-sm-4">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="mutationRadios" id="mutationRadiosYes" value="yes">
+                                    <label class="form-check-label" for="mutationRadiosYes">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="mutationRadios" id="mutationRadiosNo" value="no">
+                                    <label class="form-check-label" for="mutationRadiosNo">No</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6"><em>Non-missense mutations include insertions, deletions, truncating mutations or mutations affecting splicing</em></div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <div class="row align-items-center">
+                            <legend class="col-form-label col-sm-2 pt-0"><strong>Atrio-ventricular block</strong></legend>
+                            <div class="col-sm-4">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="blockRadios" id="blockRadiosAbsent" value="yes">
+                                    <label class="form-check-label" for="blockRadiosAbsent">Absent</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="blockRadios" id="blockRadios1stDegree" value="no">
+                                    <label class="form-check-label" for="blockRadios1stDegree">1st degree</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="blockRadios" id="blockRadiosHighDegree" value="no">
+                                    <label class="form-check-label" for="blockRadiosHighDegree">High degree</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6"><em>1st degree AV block corresponds to ≥0.20 sec PR interval and high degree AV block to type II 2nd degree or 3rd degree (and not type I 2nd degree)</em></div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="form-group">
+                        <div class="row align-items-center">
+                            <legend class="col-form-label col-sm-2 pt-0"><strong>Non-sustained ventricular&#8239;tachycardia</strong></legend>
+                            <div class="col-sm-4">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="tachycardiaRadios" id="tachycardiaRadiosYes" value="yes">
+                                    <label class="form-check-label" for="tachycardiaRadiosYes">Yes</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="tachycardiaRadios" id="tachycardiaRadiosNo" value="no">
+                                    <label class="form-check-label" for="tachycardiaRadiosNo">No</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6"><em>NSVT corresponds to ≥3 consecutive ventricular complexes at a rate ≥120 bpm on 24-h ambulatory electrocardiographic monitoring</em></div>
+                        </div>
+                    </fieldset>
+                    <div class="form-group row align-items-center">
+                        <label for="inputEjectionFraction" class="col-sm-2 col-form-label pt-0"><strong>Left ventricular ejection fraction</strong></label>
+                        <div class="col-sm-1">
+                            <input type="text" class="form-control" id="inputEjectionFraction">
+                        </div>
+                        <div class="col-sm-1 pl-0">
+                            %
+                        </div>
+                        <div class="col-sm-6 offset-sm-2"><em>Left ventricular ejection fraction measurement was derived from echocardiogram</em></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row justify-content-md-center mt-4">
+            <div class="col-sm-8">
+                <div class="card text-center">
+                    <div class="card-header">
+                        <strong>Risk of Life-Threatening Ventricular Tachyarrhythmias at 5 years</strong>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text lead"><strong>___ %</strong></p>
+                        <a href="#" class="btn btn-link pl-0">Reset</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row justify-content-md-center mt-4">
+            <div class="col-sm-10">
+                <p class="text-center"><em>Life-Threatening Ventricular Tachyarrhythmias is defined as 1) sudden cardiac death, 2) appropriate ICD therapy, defined as a shock to terminate a VTA, or 3) other manifestations of hemodynamically unstable VTA</em></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+</body>
+
+</html>
