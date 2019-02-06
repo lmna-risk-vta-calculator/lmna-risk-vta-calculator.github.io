@@ -24,7 +24,7 @@
         </div>
         <div class="row mt-4">
             <div class="col">
-                <form>
+                <form v-on:submit.prevent>
                     <fieldset class="form-group">
                         <div class="row align-items-center">
                             <legend class="col-form-label col-sm-2 pt-0"><strong>Sex</strong></legend>
@@ -57,8 +57,7 @@
                                     <label class="form-check-label" for="mutationRadiosNo">No</label>
                                 </div>
                             </div>
-                            <div class="col-sm-6"><em>Non-missense mutations include insertions, deletions, truncating
-                                    mutations or mutations affecting splicing</em></div>
+                            <div class="col-sm-6"><em>Non-missense mutations include insertions, deletions, truncating mutations or mutations affecting splicing</em></div>
                         </div>
                     </fieldset>
                     <fieldset class="form-group">
@@ -66,9 +65,9 @@
                             <legend class="col-form-label col-sm-2 pt-0"><strong>Atrio-ventricular block</strong></legend>
                             <div class="col-sm-4">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="blockRadios" id="blockRadiosAbsent"
+                                    <input class="form-check-input" type="radio" name="blockRadios" id="blockRadios1stDegree"
                                         v-model="block" value="absent" @change="compute">
-                                    <label class="form-check-label" for="blockRadiosAbsent">Absent</label>
+                                    <label class="form-check-label" for="blockRadios1stDegree">Absent</label>
                                 </div>
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="blockRadios" id="blockRadios1stDegree"
@@ -81,8 +80,7 @@
                                     <label class="form-check-label" for="blockRadiosHighDegree">High degree</label>
                                 </div>
                             </div>
-                            <div class="col-sm-6"><em>1st degree AV block corresponds to ≥0.20 sec PR interval and high
-                                    degree AV block to type II 2nd degree or 3rd degree (and not type I 2nd degree)</em></div>
+                            <div class="col-sm-6"><em>1st degree AV block corresponds to ≥0.20 sec PR interval and high degree AV block to type II 2nd degree or 3rd degree (and not type I 2nd degree)</em></div>
                         </div>
                     </fieldset>
                     <fieldset class="form-group">
@@ -109,14 +107,13 @@
                         <label for="ejectionFractionInput" class="col-sm-2 col-form-label pt-0"><strong>Left
                                 ventricular ejection fraction</strong></label>
                         <div class="col-sm-1">
-                            <input v-model="ejectionFraction" type="text" class="form-control" id="ejectionFractionInput"
-                                @change="compute">
+                            <input v-on:keyup.enter="compute" v-model="ejectionFraction" type="text" class="form-control"
+                                id="ejectionFractionInput" @change="compute" v-bind:class="{ 'border-danger': ejectionFractionError }">
                         </div>
                         <div class="col-sm-1 pl-0">
                             %
                         </div>
-                        <div class="col-sm-6 offset-sm-2"><em>Left ventricular ejection fraction measurement was
-                                derived from echocardiogram</em></div>
+                        <div class="col-sm-6 offset-sm-2"><em>Left ventricular ejection fraction measurement was derived from echocardiogram</em></div>
                     </div>
                 </form>
             </div>
@@ -134,11 +131,9 @@
                 </div>
             </div>
         </div>
-        <div class="row justify-content-md-center mt-4">
+        <div class="row justify-content-md-center mt-3">
             <div class="col-sm-10">
-                <p class="text-center"><em>Life-Threatening Ventricular Tachyarrhythmias is defined as 1) sudden
-                        cardiac death, 2) appropriate ICD therapy, defined as a shock to terminate a VTA, or 3) other
-                        manifestations of hemodynamically unstable VTA</em></p>
+                <p class="text-center"><em>Life-Threatening Ventricular Tachyarrhythmias is defined as 1) sudden cardiac death, 2) appropriate ICD therapy, defined as a shock to terminate a VTA, or 3) other manifestations of hemodynamically unstable VTA</em></p>
             </div>
         </div>
     </div>
@@ -163,6 +158,7 @@
                 block: undefined,
                 tachycardia: undefined,
                 ejectionFraction: undefined,
+                ejectionFractionError: false,
                 rate: "___ %"
             },
 
@@ -173,11 +169,22 @@
                     this.block = undefined;
                     this.tachycardia = undefined;
                     this.ejectionFraction = undefined;
+                    this.ejectionFractionError = false;
                     this.rate = "___ %";
                 },
                 compute() {
-                    if (this.sex && this.mutation && this.block && this.tachycardia && this.ejectionFraction) {
-                        this.rate = "100 %";
+                    this.ejectionFractionError = false;
+                    if (this.ejectionFraction && (isNaN(this.ejectionFraction) || this.ejectionFraction < 0 || this.ejectionFraction > 100)) {
+                        this.ejectionFractionError = true;
+                        this.rate = "___ %";
+                    } else if (this.sex && this.mutation && this.tachycardia && this.ejectionFraction) {
+                        var sexRate = this.sex === 'male' ? 0.51573542 : 0;
+                        var mutationRate = this.mutation === 'yes' ? 0.56318475 : 0;
+                        var blockRate = this.block === 'absent' ? 0 : (this.block === '1st-degree' ? 0.85513823 : 1.05127326);
+                        var tachycardiaRate = this.tachycardia === 'yes' ? 0.76692653 : 0;
+                        var ejectionFractionRate = 0.01949484 * this.ejectionFraction;
+                        var prognosticIndex = sexRate + mutationRate + blockRate + tachycardiaRate - ejectionFractionRate;
+                        this.rate = Math.floor((1 - Math.pow(0.8884505, prognosticIndex)) * 1000) / 10 + " %";
                     } else {
                         this.rate = "___ %";
                     }
