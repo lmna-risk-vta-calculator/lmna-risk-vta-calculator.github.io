@@ -184,7 +184,7 @@
                         var tachycardiaRate = this.tachycardia === 'yes' ? 0.76692653 : 0;
                         var ejectionFractionRate = 0.01949484 * this.ejectionFraction;
                         var prognosticIndex = sexRate + mutationRate + blockRate + tachycardiaRate - ejectionFractionRate;
-                        this.rate = Math.floor((1 - Math.pow(0.8884505, prognosticIndex)) * 1000) / 10 + " %";
+                        this.rate = Math.round((1 - Math.pow(0.8884505, Math.exp(prognosticIndex))) * 1000) / 10 + " %";
                     } else {
                         this.rate = "___ %";
                     }
